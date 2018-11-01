@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
+import fireInit from '../../Utils/firebase';
 import firebase from 'firebase'
-import './App.css';
 
-class App extends Component {
+class Content extends Component {
 
   constructor() {
-    super();
+    super();    
+    this.logout = this.logout.bind(this)
     this.state = {
       speed: 10
     };
   }
 
+  //Conect RealTimeDataBase
   componentDidMount(){
     const rootRef = firebase.database().ref()
     const speedRef = rootRef.child('speed');
@@ -19,18 +21,21 @@ class App extends Component {
         speed: snap.val()
       })
     })
-
-    console.log(rootRef)
   }
 
+  logout() {
+    fireInit.auth().signOut();
+  }
 
   render() {
     return (
-      <div className="App">
-        <h1>{this.state.speed}</h1>
-      </div>
+
+        <div>
+          <h1>{this.state.speed}</h1>
+          <button onClick={this.logout}>LogOut</button>
+        </div>
     );
   }
 }
 
-export default App;
+export default Content;
